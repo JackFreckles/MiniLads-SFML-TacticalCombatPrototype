@@ -27,3 +27,10 @@ void Grid::DrawGrid(sf::RenderWindow& window)
         }
     }
 }
+
+sf::Vector2i Grid::GetTileAtMouse(sf::RenderWindow& window)
+{
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
+    return {static_cast<int>((mousePosition.x - startX) / tileSize), static_cast<int>((mousePosition.y - startY) / tileSize)};
+}

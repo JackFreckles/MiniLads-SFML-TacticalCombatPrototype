@@ -7,6 +7,7 @@ class Grid
         Grid(int inGridWidth, int inGridHeight);
         void DrawTile(sf::RenderWindow& window, float x, float y);
         void DrawGrid(sf::RenderWindow& window);
+        sf::Vector2i GetTileAtMouse(sf::RenderWindow& window);
 
     private:
         float tileSize = 64.f;

@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <optional>
+#include <iostream>
 #include "grid.hpp"
 
 int main()
@@ -12,10 +13,12 @@ int main()
 
     Grid grid(18, 10);
 
+    std::cout << "MiniLads Window has successfully opened!\n\n";
+
     while (window.isOpen())
     {
         float dt = deltaClock.restart().asSeconds(); // calculate delta time
-
+        
         // Handles events (Input window triggers)
         while (const std::optional<sf::Event> event = window.pollEvent())
         {
@@ -28,8 +31,9 @@ int main()
 
         // Render window
         window.clear();
-        //grid.DrawTile(window, 64.f, 64.f);
         grid.DrawGrid(window);
+        sf::Vector2i mousePosition = grid.GetTileAtMouse(window);
+        std::cout << mousePosition.x << " " << mousePosition.y << "\n";
         window.display();
     }
 
