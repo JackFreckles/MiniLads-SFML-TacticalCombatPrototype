@@ -1,2 +1,2 @@
-# MiniLads-SFML-TacticalCombatPrototype
-Mini Lads is a small SFML based Tactical Combat prototype game
+# MiniLads - SFML - Tactical Combat Prototype
+MiniLads is a small turn-based tactical combat prototype built in C++ and SFML. It focuses on gameplay programming, enemy AI, pathfinding, and data driven combat systems.

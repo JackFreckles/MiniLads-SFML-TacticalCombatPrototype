@@ -1,0 +1,12 @@
+# CMake build files
+build/
+
+# VS Code
+.vscode
+
+# Compiled binaries
+*.exe
+*.dll
+
+# Debug symbols
+*.pdb
