@@ -10,7 +10,7 @@ int main()
 
     sf::Clock deltaClock; // tracks time between frames
 
-    Grid grid;
+    Grid grid(18, 10);
 
     while (window.isOpen())
     {
@@ -29,7 +29,7 @@ int main()
         // Render window
         window.clear();
         //grid.DrawTile(window, 64.f, 64.f);
-        grid.DrawGrid(window, 18, 10);
+        grid.DrawGrid(window);
         window.display();
     }
 
