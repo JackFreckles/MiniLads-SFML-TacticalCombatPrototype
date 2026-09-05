@@ -18,6 +18,8 @@ int main()
     while (window.isOpen())
     {
         float dt = deltaClock.restart().asSeconds(); // calculate delta time
+        sf::Vector2i mousePosition = grid.GetScreenPositionOfTileAtMouse(window);
+        sf::Vector2i tileMouseIsOn = grid.GetTileAtMouse(window);
         
         // Handles events (Input window triggers)
         while (const std::optional<sf::Event> event = window.pollEvent())
@@ -28,12 +30,10 @@ int main()
             }
         }
         
-
         // Render window
         window.clear();
         grid.DrawGrid(window);
-        sf::Vector2i mousePosition = grid.GetTileAtMouse(window);
-        std::cout << mousePosition.x << " " << mousePosition.y << "\n";
+        grid.HighlightHoveredTile(window, mousePosition, tileMouseIsOn);
         window.display();
     }
 
