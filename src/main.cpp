@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <optional>
+#include "grid.hpp"
 
 int main()
 {
@@ -8,6 +9,8 @@ int main()
     window.setFramerateLimit(60); // Set Framerate limit so it runs at same speed on any machine
 
     sf::Clock deltaClock; // tracks time between frames
+
+    Grid grid;
 
     while (window.isOpen())
     {
@@ -21,9 +24,12 @@ int main()
                 window.close();
             }
         }
+        
 
         // Render window
         window.clear();
+        //grid.DrawTile(window, 64.f, 64.f);
+        grid.DrawGrid(window, 18, 10);
         window.display();
     }
 

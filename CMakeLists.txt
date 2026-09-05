@@ -7,7 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(SFML 3.0 COMPONENTS Graphics Window System Audio REQUIRED)
 
-add_executable(MiniLads src/main.cpp)
+add_executable(MiniLads 
+    src/main.cpp
+    src/grid.cpp
+    include/grid.hpp)
 
 target_include_directories(MiniLads PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
