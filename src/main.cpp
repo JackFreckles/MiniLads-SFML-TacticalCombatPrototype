@@ -18,8 +18,9 @@ int main()
     while (window.isOpen())
     {
         float dt = deltaClock.restart().asSeconds(); // calculate delta time
-        sf::Vector2i mousePosition = grid.GetScreenPositionOfTileAtMouse(window);
-        sf::Vector2i tileMouseIsOn = grid.GetTileAtMouse(window);
+
+        sf::Vector2i mousePosition = grid.GetScreenPositionOfTileAtMouse(window); // gets the screen position of the tile the mouse is hovered over
+        sf::Vector2i tileMouseIsOn = grid.GetTileAtMouse(window); // gets the specific tile the mouse is on
         
         // Handles events (Input window triggers)
         while (const std::optional<sf::Event> event = window.pollEvent())
@@ -28,12 +29,22 @@ int main()
             {
                 window.close();
             }
+
+            // detect mouse button presses
+            if (const auto* mousePressed = event->getIf<sf::Event::MouseButtonPressed>())
+            {
+                // check if left was clicked
+                if (mousePressed->button == sf::Mouse::Button::Left)
+                {
+                    grid.SetSelectedTile(tileMouseIsOn);
+                }
+            }
         }
         
         // Render window
         window.clear();
         grid.DrawGrid(window);
-        grid.HighlightHoveredTile(window, mousePosition, tileMouseIsOn);
+        grid.HighlightHoveredTile(window, mousePosition, tileMouseIsOn); // highlights the tile that is currently hovered over
         window.display();
     }
 

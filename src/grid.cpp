@@ -5,14 +5,16 @@ Grid::Grid(int inGridWidth, int inGridHeight)
 {
     gridWidth = inGridWidth;
     gridHeight = inGridHeight;
+
+    tiles = std::vector(gridWidth, std::vector<TileState>(gridHeight, TileState::Normal)); // initializes matrix matching grid with each TileState set to Normal as default
 }
 
-void Grid::DrawTile(sf::RenderWindow& window, float x, float y, sf::Color color)
+void Grid::DrawTile(sf::RenderWindow& window, float x, float y, sf::Color fillColor, sf::Color borderColor)
 {
     sf::RectangleShape tile({tileSize, tileSize});
     tile.setPosition({x, y});
-    tile.setFillColor(color);
-    tile.setOutlineColor(sf::Color::Black);
+    tile.setFillColor(fillColor);
+    tile.setOutlineColor(borderColor);
     tile.setOutlineThickness(2.f);
 
     window.draw(tile);
@@ -24,8 +26,13 @@ void Grid::DrawGrid(sf::RenderWindow& window)
     {
         for (int x = 0; x < gridWidth; x++)
         {
-            DrawTile(window, startX + x * tileSize, startY + y * tileSize, sf::Color::Green);
+            DrawTile(window, startX + x * tileSize, startY + y * tileSize, sf::Color::Green, sf::Color::Black);
         }
+    }
+
+    if (selectedTile != sf::Vector2i(-1,-1))
+    {
+        DrawTile(window, startX + selectedTile.x * tileSize, startY + selectedTile.y * tileSize, sf::Color::Transparent, sf::Color::Yellow);
     }
 }
 
@@ -47,11 +54,19 @@ void Grid::HighlightHoveredTile(sf::RenderWindow& window, sf::Vector2i mousePosi
 {
     if (IsValidTile(tileMouseIsOn))
     {
-        DrawTile(window, mousePositionOnScreen.x, mousePositionOnScreen.y, sf::Color::Blue);
+        DrawTile(window, mousePositionOnScreen.x, mousePositionOnScreen.y, sf::Color::Transparent, sf::Color::Red);
     }
 }
 
 bool Grid::IsValidTile(sf::Vector2i tile)
 {
     return tile.x >= 0 && tile.x < gridWidth && tile.y >= 0 && tile.y < gridHeight;
+}
+
+void Grid::SetSelectedTile(sf::Vector2i tileMouseIsOn)
+{
+    if (IsValidTile(tileMouseIsOn))
+    {
+        selectedTile = tileMouseIsOn;
+    }
 }
