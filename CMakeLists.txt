@@ -14,7 +14,9 @@ add_executable(MiniLads
     src/unit.cpp
     include/unit.hpp
     src/playerController.cpp
-    include/playerController.hpp)
+    include/playerController.hpp
+    src/pathfinder.cpp
+    include/pathfinder.hpp)
 
 target_include_directories(MiniLads PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 

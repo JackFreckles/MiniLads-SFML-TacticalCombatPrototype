@@ -4,6 +4,7 @@
 #include "grid.hpp"
 #include "unit.hpp"
 #include "playerController.hpp"
+#include "pathfinder.hpp"
 
 int main()
 {
@@ -48,9 +49,9 @@ int main()
                     else
                     {
                         grid.SetSelectedTile(tileMouseIsOn);
-                        if (grid.IsTileBlocked(tileMouseIsOn))
+                        if (!grid.IsTileWalkable(tileMouseIsOn))
                         {
-                            std::cout << "This is a blocked tile\n";
+                            std::cout << "This is an unwalkable tile\n";
                         }
                     }
                 }

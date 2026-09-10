@@ -6,7 +6,7 @@ Grid::Grid(int inGridWidth, int inGridHeight)
     gridWidth = inGridWidth;
     gridHeight = inGridHeight;
 
-    tiles = std::vector(gridWidth, std::vector<TileState>(gridHeight, TileState::Normal)); // initializes matrix matching grid with each TileState set to Normal as default
+    tiles = std::vector(gridWidth, std::vector<TileType>(gridHeight, TileType::Grass)); // initializes matrix matching grid with each TileState set to Normal as default
 }
 
 void Grid::DrawTile(sf::RenderWindow& window, float x, float y, sf::Color fillColor, sf::Color borderColor)
@@ -23,6 +23,8 @@ void Grid::DrawTile(sf::RenderWindow& window, float x, float y, sf::Color fillCo
 void Grid::DrawGrid(sf::RenderWindow& window)
 {
     sf::Vector2i blockedTile{10,3};
+    sf::Vector2i dirtTile{10, 4};
+    sf::Vector2i waterTile{10, 5};
 
     for (int y = 0; y < gridHeight; y++)
     {
@@ -30,9 +32,29 @@ void Grid::DrawGrid(sf::RenderWindow& window)
         {
             if (x == blockedTile.x && y == blockedTile.y)
             {
-                tiles[x][y] = TileState::Blocked;
+                tiles[x][y] = TileType::Blocked;
             }
-            DrawTile(window, startX + x * tileSize, startY + y * tileSize, sf::Color::Green, sf::Color::Black);
+            if (x == dirtTile.x && y == dirtTile.y)
+            {
+                tiles[x][y] = TileType::Mud;
+            }
+            if (x == waterTile.x && y == waterTile.y)
+            {
+                tiles[x][y] = TileType::Water;
+            }
+
+            if (tiles[x][y] == TileType::Grass)
+            {
+                DrawTile(window, startX + x * tileSize, startY + y * tileSize, sf::Color::Green, sf::Color::Transparent);
+            }
+            if (tiles[x][y] == TileType::Mud)
+            {
+                DrawTile(window, startX + x * tileSize, startY + y * tileSize, sf::Color(165, 42, 42), sf::Color::Transparent); // sf::Color(165, 42, 42) makes brown
+            }
+            if (tiles[x][y] == TileType::Water)
+            {
+                DrawTile(window, startX + x * tileSize, startY + y * tileSize, sf::Color::Blue, sf::Color::Transparent);
+            }
         }
     }
 
@@ -41,9 +63,9 @@ void Grid::DrawGrid(sf::RenderWindow& window)
         DrawTile(window, startX + selectedTile.x * tileSize, startY + selectedTile.y * tileSize, sf::Color::Transparent, sf::Color::Yellow);
     }
 
-    if (tiles[blockedTile.x][blockedTile.y] == TileState::Blocked)
+    if (tiles[blockedTile.x][blockedTile.y] == TileType::Blocked)
     {
-        DrawTile(window, startX + blockedTile.x * tileSize, startY + blockedTile.y * tileSize, sf::Color::Black, sf::Color::Black);
+        DrawTile(window, startX + blockedTile.x * tileSize, startY + blockedTile.y * tileSize, sf::Color::Black, sf::Color::Transparent);
     }
 }
 
@@ -89,7 +111,7 @@ sf::Vector2i Grid::GetSelectedTile()
     return selectedTile;
 }
 
-TileState Grid::GetTileState(sf::Vector2i tile)
+TileType Grid::GetTileType(sf::Vector2i tile)
 {
     return tiles[tile.x][tile.y];
 }
@@ -99,12 +121,19 @@ sf::Vector2f Grid::ConvertTileToScreenPosition(sf::Vector2i unitPosition)
     return {unitPosition.x * tileSize + startX, unitPosition.y * tileSize + startY};
 }
 
-bool Grid::IsTileBlocked(sf::Vector2i tile)
+bool Grid::IsTileWalkable(sf::Vector2i tile)
 {
     if (!IsValidTile(tile)) // if tile outside grid is somehow selected then return true (Tile is blocked)
     {
         return true;
     }
 
-    return tiles[tile.x][tile.y] == TileState::Blocked;
+    if (tiles[tile.x][tile.y] == TileType::Blocked || tiles[tile.x][tile.y] == TileType::Water)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }

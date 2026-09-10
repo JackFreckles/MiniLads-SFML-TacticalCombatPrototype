@@ -9,7 +9,7 @@ void PlayerController::MoveToNewTile(sf::Vector2i newTile)
 {
     sf::Vector2i playerTile = playerUnitRef.GetPosition();
     int distance = std::abs(newTile.x - playerTile.x) + std::abs(newTile.y - playerTile.y); // Manhattan distance equation
-    if (distance <= movementRange && !grid.IsTileBlocked(newTile))
+    if (distance <= movementRange && grid.IsTileWalkable(newTile))
     {
         playerUnitRef.SetPosition(newTile);
     }
