@@ -13,16 +13,21 @@ The planned prototype will feature:
 
 ## Current Progress
 
-- [X] SFML project setup
-- [X] Tactical grid rendering
-- [X] Mouse to grid coordinate system
-- [X] Tile hovering and selection
-- [X] Basic Unit class
-- [X] Unit rendering
-- [ ] Player movement
-- [ ] Combat system
-- [ ] Enemy units
-- [ ] Enemy AI
-- [ ] Pathfinding
-- [ ] Abilities and status affects
-- [ ] UI
+### Completed
+- SFML project setup
+- Tactical grid rendering
+- Mouse-to-grid coordinate conversion
+- Tile hovering and selection
+- Basic Unit class
+- Unit rendering
+
+### In Development
+- Player movement
+
+### Planned
+- Combat system
+- Enemy units
+- Enemy AI
+- A* pathfinding
+- Abilities and status effects
+- UI
