@@ -70,3 +70,8 @@ void Grid::SetSelectedTile(sf::Vector2i tileMouseIsOn)
         selectedTile = tileMouseIsOn;
     }
 }
+
+sf::Vector2f Grid::ConvertUnitPositionToPixel(sf::Vector2f unitPosition)
+{
+    return {unitPosition.x * tileSize + startX, unitPosition.y * tileSize + startY};
+}

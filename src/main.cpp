@@ -2,6 +2,7 @@
 #include <optional>
 #include <iostream>
 #include "grid.hpp"
+#include "unit.hpp"
 
 int main()
 {
@@ -12,6 +13,8 @@ int main()
     sf::Clock deltaClock; // tracks time between frames
 
     Grid grid(18, 10);
+
+    Unit player({5,5});
 
     std::cout << "MiniLads Window has successfully opened!\n\n";
 
@@ -45,6 +48,7 @@ int main()
         window.clear();
         grid.DrawGrid(window);
         grid.HighlightHoveredTile(window, mousePosition, tileMouseIsOn); // highlights the tile that is currently hovered over
+        player.Draw(window, grid.ConvertUnitPositionToPixel(player.GetPosition()));
         window.display();
     }
 

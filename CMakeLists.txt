@@ -10,7 +10,9 @@ find_package(SFML 3.0 COMPONENTS Graphics Window System Audio REQUIRED)
 add_executable(MiniLads 
     src/main.cpp
     src/grid.cpp
-    include/grid.hpp)
+    include/grid.hpp
+    src/unit.cpp
+    include/unit.hpp)
 
 target_include_directories(MiniLads PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 

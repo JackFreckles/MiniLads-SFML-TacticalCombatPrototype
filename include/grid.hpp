@@ -20,6 +20,8 @@ class Grid
         sf::Vector2i SelectTile(sf::RenderWindow& window, sf::Vector2i mousePositionOnScreen, sf::Vector2i tileMouseIsOn);
         void SetSelectedTile(sf::Vector2i tileMouseIsOn);
 
+        sf::Vector2f ConvertUnitPositionToPixel(sf::Vector2f unitPosition);
+
     private:
         float tileSize = 64.f;
         float startX = 70.f;
