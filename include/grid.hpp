@@ -21,6 +21,7 @@ class Grid
         void SetSelectedTile(sf::Vector2i tileMouseIsOn);
         sf::Vector2i GetSelectedTile();
         TileState GetTileState(sf::Vector2i tile);
+        bool IsTileBlocked(sf::Vector2i tile);
 
         sf::Vector2f ConvertTileToScreenPosition(sf::Vector2i unitPosition);
 

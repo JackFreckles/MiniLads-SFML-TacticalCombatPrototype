@@ -48,6 +48,10 @@ int main()
                     else
                     {
                         grid.SetSelectedTile(tileMouseIsOn);
+                        if (grid.IsTileBlocked(tileMouseIsOn))
+                        {
+                            std::cout << "This is a blocked tile\n";
+                        }
                     }
                 }
             }

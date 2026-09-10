@@ -98,3 +98,13 @@ sf::Vector2f Grid::ConvertTileToScreenPosition(sf::Vector2i unitPosition)
 {
     return {unitPosition.x * tileSize + startX, unitPosition.y * tileSize + startY};
 }
+
+bool Grid::IsTileBlocked(sf::Vector2i tile)
+{
+    if (!IsValidTile(tile)) // if tile outside grid is somehow selected then return true (Tile is blocked)
+    {
+        return true;
+    }
+
+    return tiles[tile.x][tile.y] == TileState::Blocked;
+}
