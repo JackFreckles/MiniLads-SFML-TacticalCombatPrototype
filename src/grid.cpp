@@ -22,10 +22,16 @@ void Grid::DrawTile(sf::RenderWindow& window, float x, float y, sf::Color fillCo
 
 void Grid::DrawGrid(sf::RenderWindow& window)
 {
+    sf::Vector2i blockedTile{10,3};
+
     for (int y = 0; y < gridHeight; y++)
     {
         for (int x = 0; x < gridWidth; x++)
         {
+            if (x == blockedTile.x && y == blockedTile.y)
+            {
+                tiles[x][y] = TileState::Blocked;
+            }
             DrawTile(window, startX + x * tileSize, startY + y * tileSize, sf::Color::Green, sf::Color::Black);
         }
     }
@@ -34,13 +40,18 @@ void Grid::DrawGrid(sf::RenderWindow& window)
     {
         DrawTile(window, startX + selectedTile.x * tileSize, startY + selectedTile.y * tileSize, sf::Color::Transparent, sf::Color::Yellow);
     }
+
+    if (tiles[blockedTile.x][blockedTile.y] == TileState::Blocked)
+    {
+        DrawTile(window, startX + blockedTile.x * tileSize, startY + blockedTile.y * tileSize, sf::Color::Black, sf::Color::Black);
+    }
 }
 
-sf::Vector2i Grid::GetScreenPositionOfTileAtMouse(sf::RenderWindow& window)
+sf::Vector2f Grid::GetScreenPositionOfTileAtMouse(sf::RenderWindow& window)
 {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 
-    return {(static_cast<int>((mousePosition.x - startX) / tileSize) * static_cast<int>(tileSize)) + static_cast<int>(startX), (static_cast<int>((mousePosition.y - startY) / tileSize) * static_cast<int>(tileSize)) + static_cast<int>(startY)};
+    return {((mousePosition.x - startX) / tileSize * tileSize) + startX, ((mousePosition.y - startY) / tileSize * tileSize) + startY};
 }
 
 sf::Vector2i Grid::GetTileAtMouse(sf::RenderWindow& window)
@@ -50,11 +61,13 @@ sf::Vector2i Grid::GetTileAtMouse(sf::RenderWindow& window)
     return {static_cast<int>(std::floor((mousePosition.x - startX) / tileSize)), static_cast<int>(std::floor((mousePosition.y - startY) / tileSize))};
 }
 
-void Grid::HighlightHoveredTile(sf::RenderWindow& window, sf::Vector2i mousePositionOnScreen, sf::Vector2i tileMouseIsOn)
+void Grid::HighlightHoveredTile(sf::RenderWindow& window, sf::Vector2i tileMouseIsOn)
 {
     if (IsValidTile(tileMouseIsOn))
     {
-        DrawTile(window, mousePositionOnScreen.x, mousePositionOnScreen.y, sf::Color::Transparent, sf::Color::Red);
+        sf::Vector2f screenPosition = ConvertTileToScreenPosition(tileMouseIsOn);
+
+        DrawTile(window, screenPosition.x, screenPosition.y, sf::Color::Transparent, sf::Color::Red);
     }
 }
 
@@ -71,7 +84,17 @@ void Grid::SetSelectedTile(sf::Vector2i tileMouseIsOn)
     }
 }
 
-sf::Vector2f Grid::ConvertUnitPositionToPixel(sf::Vector2f unitPosition)
+sf::Vector2i Grid::GetSelectedTile()
+{
+    return selectedTile;
+}
+
+TileState Grid::GetTileState(sf::Vector2i tile)
+{
+    return tiles[tile.x][tile.y];
+}
+
+sf::Vector2f Grid::ConvertTileToScreenPosition(sf::Vector2i unitPosition)
 {
     return {unitPosition.x * tileSize + startX, unitPosition.y * tileSize + startY};
 }

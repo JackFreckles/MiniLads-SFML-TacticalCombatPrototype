@@ -4,12 +4,12 @@
 class Unit
 {
     public:
-    Unit(sf::Vector2f unitPosition);
-    sf::Vector2f GetPosition();
-    void SetPosition(sf::Vector2f newPosition);
+    Unit(sf::Vector2i unitPosition);
+    sf::Vector2i GetPosition();
+    void SetPosition(sf::Vector2i newPosition);
 
     void Draw(sf::RenderWindow &window, sf::Vector2f pixelPosition);
 
     private:
-    sf::Vector2f position;
+    sf::Vector2i position;
 };

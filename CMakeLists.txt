@@ -12,7 +12,9 @@ add_executable(MiniLads
     src/grid.cpp
     include/grid.hpp
     src/unit.cpp
-    include/unit.hpp)
+    include/unit.hpp
+    src/playerController.cpp
+    include/playerController.hpp)
 
 target_include_directories(MiniLads PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 

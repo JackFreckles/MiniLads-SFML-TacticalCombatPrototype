@@ -1,16 +1,16 @@
 #include "unit.hpp"
 
-Unit::Unit(sf::Vector2f unitPosition)
+Unit::Unit(sf::Vector2i unitPosition)
 {
     position = unitPosition;
 }
 
-void Unit::SetPosition(sf::Vector2f newPosition)
+void Unit::SetPosition(sf::Vector2i newPosition)
 {
     position = newPosition;
 }
 
-sf::Vector2f Unit::GetPosition()
+sf::Vector2i Unit::GetPosition()
 {
     return position;
 }

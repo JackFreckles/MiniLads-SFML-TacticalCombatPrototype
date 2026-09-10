@@ -3,6 +3,7 @@
 #include <iostream>
 #include "grid.hpp"
 #include "unit.hpp"
+#include "playerController.hpp"
 
 int main()
 {
@@ -14,7 +15,9 @@ int main()
 
     Grid grid(18, 10);
 
-    Unit player({5,5});
+    Unit playerUnit({5,5});
+
+    PlayerController player(playerUnit, grid);
 
     std::cout << "MiniLads Window has successfully opened!\n\n";
 
@@ -22,7 +25,6 @@ int main()
     {
         float dt = deltaClock.restart().asSeconds(); // calculate delta time
 
-        sf::Vector2i mousePosition = grid.GetScreenPositionOfTileAtMouse(window); // gets the screen position of the tile the mouse is hovered over
         sf::Vector2i tileMouseIsOn = grid.GetTileAtMouse(window); // gets the specific tile the mouse is on
         
         // Handles events (Input window triggers)
@@ -39,7 +41,14 @@ int main()
                 // check if left was clicked
                 if (mousePressed->button == sf::Mouse::Button::Left)
                 {
-                    grid.SetSelectedTile(tileMouseIsOn);
+                    if (grid.GetSelectedTile() == tileMouseIsOn)
+                    {
+                        player.MoveToNewTile(grid.GetSelectedTile());
+                    }
+                    else
+                    {
+                        grid.SetSelectedTile(tileMouseIsOn);
+                    }
                 }
             }
         }
@@ -47,8 +56,8 @@ int main()
         // Render window
         window.clear();
         grid.DrawGrid(window);
-        grid.HighlightHoveredTile(window, mousePosition, tileMouseIsOn); // highlights the tile that is currently hovered over
-        player.Draw(window, grid.ConvertUnitPositionToPixel(player.GetPosition()));
+        grid.HighlightHoveredTile(window, tileMouseIsOn); // highlights the tile that is currently hovered over
+        playerUnit.Draw(window, grid.ConvertTileToScreenPosition(playerUnit.GetPosition()));
         window.display();
     }
 
