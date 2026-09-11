@@ -23,11 +23,11 @@ The planned prototype will feature:
 
 ### In Development
 - Player movement
+- A* pathfinding
 
 ### Planned
 - Combat system
 - Enemy units
 - Enemy AI
-- A* pathfinding
 - Abilities and status effects
 - UI
