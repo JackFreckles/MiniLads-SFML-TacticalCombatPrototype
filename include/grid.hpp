@@ -6,6 +6,7 @@ enum class TileType
     Grass,
     Blocked,
     Mud,
+    Dirt,
     Water
 };
 
