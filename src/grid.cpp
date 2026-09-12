@@ -6,10 +6,30 @@ Grid::Grid(int inGridWidth, int inGridHeight)
     gridWidth = inGridWidth;
     gridHeight = inGridHeight;
 
-    tiles = std::vector(gridWidth, std::vector<TileType>(gridHeight, TileType::Grass)); // initializes matrix matching grid with each TileState set to Normal as default
-    tiles[10][3] = TileType::Blocked;
-    tiles[10][4] = TileType::Dirt;
-    tiles[10][5] = TileType::Water;
+    tiles = std::vector(gridWidth, std::vector<TileType>(gridHeight, TileType::Grass)); // initializes matrix matching grid with each TileState set to Grass as default
+
+    // Dirt Tiles
+    tiles[1][1] = TileType::Dirt; tiles[1][2] = TileType::Dirt; tiles[2][2] = TileType::Dirt; 
+    tiles[2][3] = TileType::Dirt; tiles[3][3] = TileType::Dirt; tiles[3][4] = TileType::Dirt; 
+    tiles[4][4] = TileType::Dirt; tiles[4][5] = TileType::Dirt; tiles[4][6] = TileType::Dirt;
+    tiles[4][7] = TileType::Dirt; tiles[4][8] = TileType::Dirt;
+
+    // Blocked Tiles
+    tiles[12][3] = TileType::Blocked; tiles[12][4] = TileType::Blocked; tiles[12][5] = TileType::Blocked;
+    tiles[13][5] = TileType::Blocked; tiles[14][3] = TileType::Blocked; tiles[14][4] = TileType::Blocked; 
+    tiles[14][5] = TileType::Blocked;
+
+    // Water Tiles
+    tiles[7][3] = TileType::Water; tiles[8][3] = TileType::Water; tiles[8][4] = TileType::Water;
+    tiles[9][4] = TileType::Water; tiles[9][5] = TileType::Water; tiles[9][6] = TileType::Water;
+    tiles[9][9] = TileType::Water;
+
+    // Mud Tiles
+    tiles[6][3] = TileType::Mud; tiles[7][4] = TileType::Mud; tiles[8][5] = TileType::Mud; 
+    tiles[8][6] = TileType::Mud; tiles[8][7] = TileType::Mud; tiles[9][7] = TileType::Mud; 
+    tiles[10][7] = TileType::Mud; tiles[9][3] = TileType::Mud; tiles[8][8] = TileType::Mud; 
+    tiles[9][8] = TileType::Mud; tiles[10][8] = TileType::Mud; tiles[8][9] = TileType::Mud; 
+    tiles[10][9] = TileType::Mud;
 }
 
 void Grid::DrawTile(sf::RenderWindow& window, float x, float y, sf::Color fillColor, sf::Color borderColor)
@@ -35,7 +55,7 @@ void Grid::DrawGrid(sf::RenderWindow& window)
             }
             if (tiles[x][y] == TileType::Dirt)
             {
-                DrawTile(window, startX + x * tileSize, startY + y * tileSize, sf::Color(165, 42, 42), sf::Color::Transparent); // sf::Color(165, 42, 42) makes brown
+                DrawTile(window, startX + x * tileSize, startY + y * tileSize, sf::Color(150, 75, 0), sf::Color::Transparent); // sf::Color(150, 75, 0) makes brown
             }
             if (tiles[x][y] == TileType::Water)
             {
@@ -44,6 +64,10 @@ void Grid::DrawGrid(sf::RenderWindow& window)
             if (tiles[x][y] == TileType::Blocked)
             {
                 DrawTile(window, startX + x * tileSize, startY + y * tileSize, sf::Color::Black, sf::Color::Transparent);
+            }
+            if (tiles[x][y] == TileType::Mud)
+            {
+                DrawTile(window, startX + x * tileSize, startY + y * tileSize, sf::Color(101, 67, 33), sf::Color::Transparent); // sf::Color(101, 67, 33) makes dark brown
             }
         }
     }

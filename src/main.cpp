@@ -54,6 +54,10 @@ int main()
                             std::cout << "This is an unwalkable tile\n";
                         }
                     }
+                    std::cout << grid.GetSelectedTile().x << " " << grid.GetSelectedTile().y << "\n";
+                    // everything below this within button clicked event it test code
+                    Pathfinder path(grid, {0,9}, {17,9});
+                    AStarNode* yes = path.FindPath();
                 }
             }
         }
