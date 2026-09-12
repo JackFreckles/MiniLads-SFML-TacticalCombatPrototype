@@ -22,8 +22,8 @@ class Pathfinder
         void CalculateGHF(AStarNode* node);
         AStarNode* GetBestNode();
         void CleanUp();
-
         AStarNode* FindPath();
+        std::vector<sf::Vector2i> ReconstructPath(AStarNode* lastNodeOfPath);
 
     private:
         Grid &grid;

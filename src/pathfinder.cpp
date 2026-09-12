@@ -170,3 +170,16 @@ AStarNode* Pathfinder::FindPath()
 
     return currentPathTail;
 }
+
+std::vector<sf::Vector2i> Pathfinder::ReconstructPath(AStarNode* lastNodeOfPath)
+{
+    finalPath.clear();
+    
+    while(lastNodeOfPath != nullptr)
+    {
+        finalPath.insert(finalPath.begin(), lastNodeOfPath->position);
+        lastNodeOfPath = lastNodeOfPath->pathParent;
+    }
+
+    return finalPath;
+}
