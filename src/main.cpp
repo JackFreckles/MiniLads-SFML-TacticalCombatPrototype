@@ -54,11 +54,10 @@ int main()
                             std::cout << "This is an unwalkable tile\n";
                         }
                     }
-                    std::cout << grid.GetSelectedTile().x << " " << grid.GetSelectedTile().y << "\n";
                     // everything below this within button clicked event it test code
-                    Pathfinder path(grid, {13,4}, {13, 4});
-                    AStarNode* yes = path.FindPath();
-                    std::vector<sf::Vector2i> pathToTraverse = path.ReconstructPath(yes);
+                    // Pathfinder path(grid, {13,4}, {13, 4});
+                    // AStarNode* yes = path.FindPath();
+                    // std::vector<sf::Vector2i> pathToTraverse = path.ReconstructPath(yes);
                 }
             }
         }
@@ -67,7 +66,11 @@ int main()
         window.clear();
         grid.DrawGrid(window);
         grid.HighlightHoveredTile(window, tileMouseIsOn); // highlights the tile that is currently hovered over
-        playerUnit.Draw(window, grid.ConvertTileToScreenPosition(playerUnit.GetPosition()));
+        if (playerUnit.GetVisiblePosition() != grid.ConvertTileToScreenPosition(playerUnit.GetPosition()))
+        {
+            player.SlideToNewTile(dt, player.GetTileToMoveTo());
+        }
+        playerUnit.Draw(window, playerUnit.GetVisiblePosition());
         window.display();
     }
 

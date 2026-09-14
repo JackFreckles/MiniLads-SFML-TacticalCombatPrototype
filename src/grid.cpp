@@ -88,8 +88,9 @@ sf::Vector2f Grid::GetScreenPositionOfTileAtMouse(sf::RenderWindow& window)
 sf::Vector2i Grid::GetTileAtMouse(sf::RenderWindow& window)
 {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+    sf::Vector2f worldPosition = window.mapPixelToCoords(mousePosition);
 
-    return {static_cast<int>(std::floor((mousePosition.x - startX) / tileSize)), static_cast<int>(std::floor((mousePosition.y - startY) / tileSize))};
+    return {static_cast<int>(std::floor((worldPosition.x - startX) / tileSize)), static_cast<int>(std::floor((worldPosition.y - startY) / tileSize))};
 }
 
 void Grid::HighlightHoveredTile(sf::RenderWindow& window, sf::Vector2i tileMouseIsOn)

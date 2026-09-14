@@ -23,3 +23,23 @@ void Unit::Draw(sf::RenderWindow &window, sf::Vector2f pixelPosition)
 
     window.draw(unitShape);
 }
+
+sf::Vector2f Unit::GetVisiblePosition()
+{
+    return visiblePosition;
+}
+
+void Unit::SetVisiblePosition(sf::Vector2f newVisiblePosition)
+{
+    visiblePosition = newVisiblePosition;
+}
+
+int Unit::GetMovementCount()
+{
+    return movementCount;
+}
+
+void Unit::SetMovementCount(int newMovementCount)
+{
+    movementCount = newMovementCount;
+}
