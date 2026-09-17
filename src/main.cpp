@@ -16,7 +16,7 @@ int main()
 
     Grid grid(18, 10);
 
-    Unit playerUnit({5,5});
+    Unit playerUnit({0,0});
 
     PlayerController player(playerUnit, grid);
 
@@ -42,9 +42,19 @@ int main()
                 // check if left was clicked
                 if (mousePressed->button == sf::Mouse::Button::Left)
                 {
-                    if (grid.GetSelectedTile() == tileMouseIsOn)
+                    if (grid.GetSelectedTile() == tileMouseIsOn)// && playerUnit.GetVisiblePosition() != grid.ConvertTileToScreenPosition(playerUnit.GetPosition()))
                     {
-                        player.MoveToNewTile(grid.GetSelectedTile());
+                        sf::Vector2i currentTile = playerUnit.GetPosition();
+                        player.SetTileToMoveTo(tileMouseIsOn);
+                        player.GetPath();
+                        if (player.GetFoundPath().size() > 0)
+                        {
+                            player.SetPathStep();
+                        }
+                        else
+                        {
+                            player.SetTileToMoveTo(currentTile);
+                        }
                     }
                     else
                     {
@@ -54,10 +64,6 @@ int main()
                             std::cout << "This is an unwalkable tile\n";
                         }
                     }
-                    // everything below this within button clicked event it test code
-                    // Pathfinder path(grid, {13,4}, {13, 4});
-                    // AStarNode* yes = path.FindPath();
-                    // std::vector<sf::Vector2i> pathToTraverse = path.ReconstructPath(yes);
                 }
             }
         }
@@ -66,9 +72,9 @@ int main()
         window.clear();
         grid.DrawGrid(window);
         grid.HighlightHoveredTile(window, tileMouseIsOn); // highlights the tile that is currently hovered over
-        if (playerUnit.GetVisiblePosition() != grid.ConvertTileToScreenPosition(playerUnit.GetPosition()))
+        if (playerUnit.GetVisiblePosition() != grid.ConvertTileToScreenPosition(player.GetTileToMoveTo()))
         {
-            player.SlideToNewTile(dt, player.GetTileToMoveTo());
+            player.SlideToNewTile(dt);
         }
         playerUnit.Draw(window, playerUnit.GetVisiblePosition());
         window.display();
