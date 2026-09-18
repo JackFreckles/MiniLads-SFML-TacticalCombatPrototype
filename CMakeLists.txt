@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(MiniLads-SFML-TacticalCombatPrototype LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20) # was 17
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(SFML 3.0 COMPONENTS Graphics Window System Audio REQUIRED)
@@ -12,7 +12,11 @@ add_executable(MiniLads
     src/grid.cpp
     include/grid.hpp
     src/unit.cpp
-    include/unit.hpp)
+    include/unit.hpp
+    src/playerController.cpp
+    include/playerController.hpp
+    src/pathfinder.cpp
+    include/pathfinder.hpp)
 
 target_include_directories(MiniLads PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
