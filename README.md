@@ -3,7 +3,10 @@
 
 MiniLads is a small turn-based tactical combat prototype built in C++ and SFML. The project focuses on gameplay systems, pathfinding, and experimenting with game architecture.
 
-The planned prototype will feature:
+## Gameplay Showcase
+<video controls src="assets/Vidoes/MiniLadsPreview(RightAfterMegingPlayerControllerBranch).mp4" title="Title"></video>
+
+## Planned Features:
 - Grid based tactical movement and combat
 - Player and enemy units
 - Enemy AI
