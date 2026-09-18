@@ -1,8 +1,7 @@
 #include "unit.hpp"
 
-Unit::Unit(sf::Vector2i unitPosition)
+Unit::Unit(sf::Vector2i unitPosition, int maxEnergy) : position(unitPosition), maxEnergy(maxEnergy)
 {
-    position = unitPosition;
 }
 
 void Unit::SetPosition(sf::Vector2i newPosition)
@@ -34,12 +33,25 @@ void Unit::SetVisiblePosition(sf::Vector2f newVisiblePosition)
     visiblePosition = newVisiblePosition;
 }
 
-int Unit::GetMovementCount()
+void Unit::SpendEnergy(int amountSpent)
 {
-    return movementCount;
+    if (amountSpent <= availableEnergy)
+    {
+        availableEnergy -= amountSpent;
+    }
 }
 
-void Unit::SetMovementCount(int newMovementCount)
+int Unit::GetAvailableEnergy()
 {
-    movementCount = newMovementCount;
+    return availableEnergy;
+}
+
+int Unit::GetMaxEnergy()
+{
+    return maxEnergy;
+}
+
+void Unit::ResetAvailableEnergy()
+{
+    availableEnergy = maxEnergy;
 }

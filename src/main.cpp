@@ -16,7 +16,7 @@ int main()
 
     Grid grid(18, 10);
 
-    Unit playerUnit({0,0});
+    Unit playerUnit({0,0}, 10);
 
     PlayerController player(playerUnit, grid);
 
@@ -42,18 +42,21 @@ int main()
                 // check if left was clicked
                 if (mousePressed->button == sf::Mouse::Button::Left)
                 {
-                    if (grid.GetSelectedTile() == tileMouseIsOn)// && playerUnit.GetVisiblePosition() != grid.ConvertTileToScreenPosition(playerUnit.GetPosition()))
+                    if (grid.GetSelectedTile() == tileMouseIsOn)
                     {
-                        sf::Vector2i currentTile = playerUnit.GetPosition();
-                        player.SetTileToMoveTo(tileMouseIsOn);
-                        player.GetPath();
-                        if (player.GetFoundPath().size() > 0)
+                        if (!player.GetFollowingPath())
                         {
-                            player.SetPathStep();
-                        }
-                        else
-                        {
-                            player.SetTileToMoveTo(currentTile);
+                            sf::Vector2i currentTile = playerUnit.GetPosition();
+                            player.SetTileToMoveTo(tileMouseIsOn);
+                            player.GetPath();
+                            if (player.GetFinalPath().size() > 0)
+                            {
+                                player.SetPathStep();
+                            }
+                            else
+                            {
+                                player.SetTileToMoveTo(currentTile);
+                            }
                         }
                     }
                     else

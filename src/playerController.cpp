@@ -7,17 +7,6 @@ PlayerController::PlayerController(Unit &playerUnit, Grid &grid) : playerUnitRef
     playerUnitRef.SetVisiblePosition(grid.ConvertTileToScreenPosition(playerUnitRef.GetPosition()));
 }
 
-void PlayerController::MoveToNewTile(sf::Vector2i newTile)
-{
-    sf::Vector2i playerTile = playerUnitRef.GetPosition();
-    int distance = std::abs(newTile.x - playerTile.x) + std::abs(newTile.y - playerTile.y); // Manhattan distance equation
-    if (distance <= movementRange && grid.IsTileWalkable(newTile))
-    {
-        playerUnitRef.SetPosition(newTile);
-        tileToMoveTo = newTile;
-    }
-}
-
 sf::Vector2i PlayerController::GetTileToMoveTo()
 {
     return tileToMoveTo;
@@ -30,6 +19,10 @@ void PlayerController::SetTileToMoveTo(sf::Vector2i newTile)
 
 void PlayerController::SlideToNewTile(float dt)//, sf::Vector2i newTile)
 {
+    if (!followingPath)
+    {
+        followingPath = true;
+    }
     sf::Vector2f playerPixel = playerUnitRef.GetVisiblePosition();
     sf::Vector2f targetPixel = grid.ConvertTileToScreenPosition(nextPathStep);
     sf::Vector2f direction = {targetPixel.x - playerPixel.x, targetPixel.y - playerPixel.y};
@@ -39,7 +32,7 @@ void PlayerController::SlideToNewTile(float dt)//, sf::Vector2i newTile)
         if (vectorLength <= movementSpeed * dt)
         {
             playerUnitRef.SetVisiblePosition(grid.ConvertTileToScreenPosition(nextPathStep));
-            playerUnitRef.SetPosition(foundPath[pathIndex]);
+            playerUnitRef.SetPosition(finalPath[pathIndex]);
             if (pathIndex < maxPathIndex)
             {
                 pathIndex++;
@@ -52,28 +45,59 @@ void PlayerController::SlideToNewTile(float dt)//, sf::Vector2i newTile)
             sf::Vector2f newVisiblePosition = {playerPixel.x + (movementSpeed * dt * unitVector.x), playerPixel.y + (movementSpeed * dt * unitVector.y)};
             playerUnitRef.SetVisiblePosition(newVisiblePosition);
         }
+
+        if (playerUnitRef.GetPosition() == tileToMoveTo)
+        {
+            followingPath = false;
+        }
     }
 }
 
 void PlayerController::GetPath()
 {
-    Pathfinder path(grid, playerUnitRef.GetPosition(), tileToMoveTo);
-    foundPath = path.ReconstructPath(path.FindPath());
-    if (foundPath.size() > 1)
+    if (!followingPath)
     {
-        pathIndex = 1;
-        maxPathIndex = foundPath.size() - 1;
-    }
-    else
-    {
-        pathIndex = 0;
-        maxPathIndex = 0;
+        Pathfinder path(grid, playerUnitRef.GetPosition(), tileToMoveTo);
+        AStarNode* foundPath = path.FindPath();
+        if (foundPath != nullptr)
+        {
+            int g = foundPath->g;
+            std::cout << "foundPath->g: " << g << "\n"
+                      << "movementEnergy: " << playerUnitRef.GetMaxEnergy() << "\n"
+                      << "availableEnergy: " << playerUnitRef.GetAvailableEnergy() << "\n\n";
+            if (g <= playerUnitRef.GetMaxEnergy() && playerUnitRef.GetAvailableEnergy() >= g)
+            {
+                playerUnitRef.SpendEnergy(g);
+                finalPath = path.ReconstructPath(foundPath);
+            }
+            else
+            {
+                finalPath.clear();
+            }
+        
+            if (finalPath.size() > 1)
+            {
+                pathIndex = 1;
+                maxPathIndex = finalPath.size() - 1;
+            }
+            else
+            {
+                pathIndex = 0;
+                maxPathIndex = 0;
+            }
+        }
+        else
+        {
+            pathIndex = 0;
+            maxPathIndex = 0;
+            finalPath.clear();
+        }
     }
 }
 
-std::vector<sf::Vector2i> PlayerController::GetFoundPath()
+std::vector<sf::Vector2i> PlayerController::GetFinalPath()
 {
-    return foundPath;
+    return finalPath;
 }
 
 int PlayerController::GetPathIndex()
@@ -88,5 +112,10 @@ int PlayerController::GetMaxPathIndex()
 
 void PlayerController::SetPathStep()
 {
-    nextPathStep = foundPath[pathIndex];
+    nextPathStep = finalPath[pathIndex];
+}
+
+bool PlayerController::GetFollowingPath()
+{
+    return followingPath;
 }
