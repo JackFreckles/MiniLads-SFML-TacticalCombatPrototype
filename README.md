@@ -1,7 +1,7 @@
 # MiniLads - SFML - Tactical Combat Prototype
 **Work in Progress**
 
-MiniLads is a small turn-based tactical combat prototype built in C++ and SFML. The project is currently in early development, with a focus on building gameplay systems and experimenting with game architecture.
+MiniLads is a small turn-based tactical combat prototype built in C++ and SFML. The project focuses on gameplay systems, pathfinding, and experimenting with game architecture.
 
 The planned prototype will feature:
 - Grid based tactical movement and combat
@@ -20,14 +20,16 @@ The planned prototype will feature:
 - Tile hovering and selection
 - Basic Unit class
 - Unit rendering
+- A* pathfinding with terrain costs
+- Player movement with smooth path following
+- Movement energy system
 
 ### In Development
-- Player movement
-- A* pathfinding
+- Turn based gameplay
 
 ### Planned
-- Combat system
-- Enemy units
+- Enemy Units
 - Enemy AI
+- Combat system
 - Abilities and status effects
 - UI
