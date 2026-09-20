@@ -5,6 +5,7 @@
 #include "unit.hpp"
 #include "playerController.hpp"
 #include "pathfinder.hpp"
+#include "turnSystem.hpp"
 
 int main()
 {
@@ -17,8 +18,11 @@ int main()
     Grid grid(18, 10);
 
     Unit playerUnit({0,0}, 10);
+    Unit enemyUnit({5,5}, 0);
 
     PlayerController player(playerUnit, grid);
+
+    TurnSystem turnSystem(playerUnit, enemyUnit);
 
     std::cout << "MiniLads Window has successfully opened!\n\n";
 
@@ -36,37 +40,58 @@ int main()
                 window.close();
             }
 
-            // detect mouse button presses
-            if (const auto* mousePressed = event->getIf<sf::Event::MouseButtonPressed>())
+            switch (turnSystem.GetWhoseTurn())
             {
-                // check if left was clicked
-                if (mousePressed->button == sf::Mouse::Button::Left)
+                case (TurnState::PlayerTurn):
                 {
-                    if (grid.GetSelectedTile() == tileMouseIsOn)
+                    // detect mouse button presses
+                    if (const auto* mousePressed = event->getIf<sf::Event::MouseButtonPressed>())
                     {
-                        if (!player.GetFollowingPath())
+                        // check if left was clicked
+                        if (mousePressed->button == sf::Mouse::Button::Left)
                         {
-                            sf::Vector2i currentTile = playerUnit.GetPosition();
-                            player.SetTileToMoveTo(tileMouseIsOn);
-                            player.GetPath();
-                            if (player.GetFinalPath().size() > 0)
+                            if (grid.GetSelectedTile() == tileMouseIsOn)
                             {
-                                player.SetPathStep();
+                                if (!player.GetFollowingPath())
+                                {
+                                    sf::Vector2i currentTile = playerUnit.GetPosition();
+                                    player.SetTileToMoveTo(tileMouseIsOn);
+                                    player.GetPath();
+                                    if (player.GetFinalPath().size() > 0)
+                                    {
+                                        player.SetPathStep();
+                                    }
+                                    else
+                                    {
+                                        player.SetTileToMoveTo(currentTile);
+                                    }
+                                }
                             }
                             else
                             {
-                                player.SetTileToMoveTo(currentTile);
+                                grid.SetSelectedTile(tileMouseIsOn);
+                                if (!grid.IsTileWalkable(tileMouseIsOn))
+                                {
+                                    std::cout << "This is an unwalkable tile\n";
+                                }
                             }
                         }
                     }
-                    else
+                    if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
                     {
-                        grid.SetSelectedTile(tileMouseIsOn);
-                        if (!grid.IsTileWalkable(tileMouseIsOn))
+                        if (keyPressed->code == sf::Keyboard::Key::Q)
                         {
-                            std::cout << "This is an unwalkable tile\n";
+                            turnSystem.EndTurn();
+                            std::cout << "Player turn ended \n";
                         }
                     }
+                    break;
+                }
+                case (TurnState::EnemyTurn):
+                {
+                    turnSystem.EndTurn();
+                    std::cout << "Enemy turn ended \n";
+                    break;
                 }
             }
         }
