@@ -26,12 +26,12 @@ https://github.com/user-attachments/assets/6e05c19c-6593-42e9-8f69-94a7e64d73b1
 - A* pathfinding with terrain costs
 - Player movement with smooth path following
 - Movement energy system
+- Basic turn based gameplay
 
 ### In Development
-- Turn based gameplay
+- Enemy Units
 
 ### Planned
-- Enemy Units
 - Enemy AI
 - Combat system
 - Abilities and status effects
