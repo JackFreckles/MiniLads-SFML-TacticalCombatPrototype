@@ -49,6 +49,7 @@ void PlayerController::SlideToNewTile(float dt)//, sf::Vector2i newTile)
         if (playerUnitRef.GetPosition() == tileToMoveTo)
         {
             followingPath = false;
+            grid.SetTileOccupation(playerUnitRef.GetPosition(), Occupation::Occupied);
         }
     }
 }
@@ -57,33 +58,42 @@ void PlayerController::GetPath()
 {
     if (!followingPath)
     {
-        Pathfinder path(grid, playerUnitRef.GetPosition(), tileToMoveTo);
-        AStarNode* foundPath = path.FindPath();
-        if (foundPath != nullptr)
+        if (!grid.IsTileOccupied(tileToMoveTo))
         {
-            int g = foundPath->g;
-            std::cout << "foundPath->g: " << g << "\n"
-                      << "movementEnergy: " << playerUnitRef.GetMaxEnergy() << "\n"
-                      << "availableEnergy: " << playerUnitRef.GetAvailableEnergy() << "\n\n";
-            if (g <= playerUnitRef.GetMaxEnergy() && playerUnitRef.GetAvailableEnergy() >= g)
+            Pathfinder path(grid, playerUnitRef.GetPosition(), tileToMoveTo);
+            AStarNode* foundPath = path.FindPath();
+            if (foundPath != nullptr)
             {
-                playerUnitRef.SpendEnergy(g);
-                finalPath = path.ReconstructPath(foundPath);
-            }
-            else
-            {
-                finalPath.clear();
-            }
-        
-            if (finalPath.size() > 1)
-            {
-                pathIndex = 1;
-                maxPathIndex = finalPath.size() - 1;
+                int g = foundPath->g;
+                std::cout << "foundPath->g: " << g << "\n"
+                          << "movementEnergy: " << playerUnitRef.GetMaxEnergy() << "\n"
+                          << "availableEnergy: " << playerUnitRef.GetAvailableEnergy() << "\n\n";
+                if (g <= playerUnitRef.GetMaxEnergy() && playerUnitRef.GetAvailableEnergy() >= g)
+                {
+                    playerUnitRef.SpendEnergy(g);
+                    finalPath = path.ReconstructPath(foundPath);
+                }
+                else
+                {
+                    finalPath.clear();
+                }
+            
+                if (finalPath.size() > 1)
+                {
+                    pathIndex = 1;
+                    maxPathIndex = finalPath.size() - 1;
+                }
+                else
+                {
+                    pathIndex = 0;
+                    maxPathIndex = 0;
+                }
             }
             else
             {
                 pathIndex = 0;
                 maxPathIndex = 0;
+                finalPath.clear();
             }
         }
         else

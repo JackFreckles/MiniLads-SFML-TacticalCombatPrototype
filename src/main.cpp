@@ -17,8 +17,11 @@ int main()
 
     Grid grid(18, 10);
 
-    Unit playerUnit({0,0}, 10);
-    Unit enemyUnit({5,5}, 0);
+    Unit playerUnit({0,0}, 10, UnitClass::Knight, UnitType::Player);
+    grid.SetTileOccupation(playerUnit.GetPosition(), Occupation::Occupied);
+    Unit enemyUnit({5,5}, 0, UnitClass::Barbarian, UnitType::Enemy);
+    enemyUnit.SetVisiblePosition(grid.ConvertTileToScreenPosition(enemyUnit.GetPosition()));
+    grid.SetTileOccupation({5,5}, Occupation::Occupied);
 
     PlayerController player(playerUnit, grid);
 
@@ -59,6 +62,7 @@ int main()
                                     player.GetPath();
                                     if (player.GetFinalPath().size() > 0)
                                     {
+                                        grid.SetTileOccupation(currentTile, Occupation::Unoccupied);
                                         player.SetPathStep();
                                     }
                                     else
@@ -74,6 +78,15 @@ int main()
                                 {
                                     std::cout << "This is an unwalkable tile\n";
                                 }
+                            }
+                        }
+
+                        if (mousePressed->button == sf::Mouse::Button::Right)
+                        {
+                            grid.SetSelectedTile(tileMouseIsOn);
+                            if (grid.IsTileOccupied(grid.GetSelectedTile()))
+                            {
+                                std::cout << "tile: (" << grid.GetSelectedTile().x << "," << grid.GetSelectedTile().y << ") is occupied\n";
                             }
                         }
                     }
@@ -105,6 +118,7 @@ int main()
             player.SlideToNewTile(dt);
         }
         playerUnit.Draw(window, playerUnit.GetVisiblePosition());
+        enemyUnit.Draw(window, enemyUnit.GetVisiblePosition());
         window.display();
     }
 

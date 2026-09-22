@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "unit.hpp"
 
 enum class TileType
 {
@@ -8,6 +9,18 @@ enum class TileType
     Mud,
     Dirt,
     Water
+};
+
+enum class Occupation
+{
+    Unoccupied,
+    Occupied
+};
+
+struct Tile
+{
+    TileType type = TileType::Grass;
+    Occupation occupation = Occupation::Unoccupied;
 };
 
 class Grid
@@ -25,6 +38,8 @@ class Grid
         sf::Vector2i GetSelectedTile();
         TileType GetTileType(sf::Vector2i tile);
         bool IsTileWalkable(sf::Vector2i tile);
+        bool IsTileOccupied(sf::Vector2i tile);
+        void SetTileOccupation(sf::Vector2i tile, Occupation occupancy);
 
         sf::Vector2f ConvertTileToScreenPosition(sf::Vector2i unitPosition);
 
@@ -34,6 +49,6 @@ class Grid
         float startY = 50.f;
         int gridWidth = 0;
         int gridHeight = 0;
-        std::vector<std::vector<TileType>> tiles;
+        std::vector<std::vector<Tile>> tiles;
         sf::Vector2i selectedTile{-1,-1};
 };

@@ -74,19 +74,19 @@ void Pathfinder::GetNeighbors(AStarNode* currentNode)
     sf::Vector2i upNeighbor{currentNode->position.x, currentNode->position.y - 1};
     sf::Vector2i downNeighbor{currentNode->position.x, currentNode->position.y + 1};
 
-    if (grid.IsValidTile(leftNeighbor) && grid.IsTileWalkable(leftNeighbor))
+    if (grid.IsValidTile(leftNeighbor) && grid.IsTileWalkable(leftNeighbor) && !grid.IsTileOccupied(leftNeighbor))
     {
         DoesThisNodeExist(currentNode, leftNeighbor);
     }
-    if (grid.IsValidTile(rightNeighbor) && grid.IsTileWalkable(rightNeighbor))
+    if (grid.IsValidTile(rightNeighbor) && grid.IsTileWalkable(rightNeighbor) && !grid.IsTileOccupied(rightNeighbor))
     {
         DoesThisNodeExist(currentNode, rightNeighbor);
     }
-    if (grid.IsValidTile(upNeighbor) && grid.IsTileWalkable(upNeighbor))
+    if (grid.IsValidTile(upNeighbor) && grid.IsTileWalkable(upNeighbor) && !grid.IsTileOccupied(upNeighbor))
     {
         DoesThisNodeExist(currentNode, upNeighbor);
     }
-    if (grid.IsValidTile(downNeighbor) && grid.IsTileWalkable(downNeighbor))
+    if (grid.IsValidTile(downNeighbor) && grid.IsTileWalkable(downNeighbor) && !grid.IsTileOccupied(downNeighbor))
     {
         DoesThisNodeExist(currentNode, downNeighbor);
     }
