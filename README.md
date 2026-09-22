@@ -27,12 +27,12 @@ https://github.com/user-attachments/assets/6e05c19c-6593-42e9-8f69-94a7e64d73b1
 - Player movement with smooth path following
 - Movement energy system
 - Basic turn based gameplay
-
-### In Development
 - Enemy Units
 
-### Planned
+### In Development
 - Enemy AI
+
+### Planned
 - Combat system
 - Abilities and status effects
 - UI
